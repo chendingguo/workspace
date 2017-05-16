@@ -10,6 +10,29 @@ import java.util.Random;
 
 import org.junit.Test;
 
+/**
+ * 测试表数据
+ * create database 20170101
+ * use database 20170101
+ * create table source (  
+        id int(11) not null auto_increment primary key comment 'pk',  
+        name varchar(10) default '' comment 'source name'  
+);  
+create table message (  
+        id int(11) not null auto_increment primary key comment 'pk',  
+        content varchar(255) default '' comment 'message content',  
+        create_time date default null,  
+        source_id int(11) not null,  
+        foreign key(source_id) references source(id)  
+);  
+insert into `source`(`id`,`name`) values(1,'weibo');  
+insert into `source`(`id`,`name`) values(2,'weixin');  
+insert into `source`(`id`,`name`) values(3,'qq');  
+insert into `source`(`id`,`name`) values(4,'email');  
+insert into `source`(`id`,`name`) values(5,'sms');
+ * @author 　蓝桥
+ *
+ */
 public class TestMycat {
 	private static final String driver = "com.mysql.jdbc.Driver";
 	private static final String url = "jdbc:mysql://127.0.0.1:8066/messagedb?useServerPrepStmts=false&rewriteBatchedStatements=true";
