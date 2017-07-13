@@ -26,9 +26,9 @@ public class ExcelTool {
 	static HSSFWorkbook xwb;
 
 	public static void main(String[] args) {
-		File file = new File("D:/excel/test2.xls");
-		String fileOutPath = "d:/excel/out2.xls";
-		int SHEET_NUMBER = 58;
+		File file = new File("D:/excel/test.xls");
+		String fileOutPath = "d:/excel/out.xls";
+		int SHEET_NUMBER = 33;
 		try {
 			xwb = new HSSFWorkbook(new FileInputStream(file));
 
