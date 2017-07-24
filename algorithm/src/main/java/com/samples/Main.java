@@ -1,6 +1,7 @@
 package com.samples;
 
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 
 class Room<T> {
 
@@ -28,9 +29,8 @@ public class Main {
 //		System.out.println(Integer.toBinaryString(b));
 //		
 //		 System.out.println(a>>b);
-		byte[] bytes = "SimpleRequest".getBytes(StandardCharsets.US_ASCII);
-		for(byte bt:bytes){
-			System.out.println(bt);
-		}
+		DecimalFormat df = new DecimalFormat("#.##");
+		double d = 9800 / 100d;
+		System.out.println(df.format(d));
 	}
 }
