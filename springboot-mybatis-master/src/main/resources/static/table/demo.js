@@ -40,7 +40,7 @@ var TableInit = function() {
 			showToggle : true, // 是否显示详细视图和列表视图的切换按钮
 			cardView : false, // 是否显示详细视图
 			detailView : false, // 是否显示父子表
-			export:true,
+			showExport:true,
 			columns : [ {
 				checkbox : true
 			}, {
