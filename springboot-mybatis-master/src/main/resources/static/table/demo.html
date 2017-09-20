@@ -55,5 +55,31 @@
 		</div>
 		<table id="tb_users"></table>
 	</div>
+	
+	
+	<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">  
+    <div class="modal-dialog">  
+        <div class="modal-content">  
+            <div class="modal-header">  
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>  
+                <h4 class="modal-title" id="myModalLabel">修改信息</h4>  
+            </div>  
+            <div class="modal-body"> 
+             
+     <input type="hidden" name="id" id="id"  />   
+               姓名：<input type="text" name="name" id="name"/>   
+             　年龄：<input type="text" name="age" id="age"/>   
+         
+            </div>  
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>  
+                <button type="button" class="btn btn-primary" onclick="update()">提交更改</button>  
+            </div>  
+        </div>  
+        <!-- /.modal-content -->  
+    </div>  
+    <!-- /.modal -->  
+</div>  
+<!-- 模态框（Modal）end -->  
 </body>
 </html>

@@ -7,9 +7,36 @@ $(function() {
 	// 2.初始化Button的点击事件
 	var oButtonInit = new ButtonInit();
 	oButtonInit.Init();
-	
 
 });
+
+//触发模态框的同时调用此方法
+function editInfo(method) {
+	// 新增
+	if (method == "add") {
+		$('#update').modal('show');
+	} else if (method == "update") {
+		// 更新
+		var rows = $('#tb_users').bootstrapTable('getAllSelections');
+		if (rows.length == 0) {
+			alert("请选择一行");
+			return;
+		}
+		var selectedRow = rows[0];
+
+		// 获取表格中的一行数据
+		var id = selectedRow.id
+		var name = selectedRow.name
+		var age = selectedRow.age
+
+		// 向模态框中传值
+		$('#id').val(id);
+		$('#name').val(name);
+		$('#age').val(age);
+
+		$('#update').modal('show');
+	}
+}
 
 var TableInit = function() {
 	var oTableInit = new Object();
@@ -20,6 +47,7 @@ var TableInit = function() {
 			method : 'get', // 请求方式（*）
 			toolbar : '#toolbar', // 工具按钮用哪个容器
 			striped : true, // 是否显示行间隔色
+			undefinedText:'--',
 			cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 			pagination : true, // 是否显示分页（*）
 			sortable : true, // 是否启用排序
@@ -29,7 +57,7 @@ var TableInit = function() {
 			pageNumber : 1, // 初始化加载第一页，默认第一页
 			pageSize : 10, // 每页的记录行数（*）
 			pageList : [ 10, 25, 50, 100 ], // 可供选择的每页的行数（*）
-			search : false, // 是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+			search : false, // 是否显示表格搜索，此搜索是客户端搜索，不会进服务端
 			strictSearch : true,
 			showColumns : true, // 是否显示所有的列
 			showRefresh : true, // 是否显示刷新按钮
@@ -40,21 +68,36 @@ var TableInit = function() {
 			showToggle : true, // 是否显示详细视图和列表视图的切换按钮
 			cardView : false, // 是否显示详细视图
 			detailView : false, // 是否显示父子表
-			showExport:true,
+			showExport : true,
+			
 			columns : [ {
 				checkbox : true
+				
 			}, {
 				field : 'id',
-				title : 'ID'
+				title : 'ID',
+				radio:false
 			}, {
 				field : 'name',
 				title : '姓名'
 			}, {
 				field : 'age',
 				title : '年龄',
-				sortable:true
+				sortable : true
 				
-			} ]
+				
+
+			} ,
+			{   field:"name",
+				title:"操作",
+				align:"center",
+				valign:"middle",
+				formatter:function(value,row,index){
+				  //alert(value);
+			      return "<a onclick=editInfo('update')>编辑</a>";
+			   }
+		    }
+			]
 		});
 	};
 
@@ -64,8 +107,8 @@ var TableInit = function() {
 			limit : params.limit, // 页面大小
 			offset : params.offset, // 页码
 			name : $("#txt_search_name").val(),
-			sortName:this.sortName,
-            sortOrder:this.sortOrder
+			sortName : this.sortName,
+			sortOrder : this.sortOrder
 		};
 		return temp;
 	};
@@ -77,16 +120,40 @@ var ButtonInit = function() {
 
 	oInit.Init = function() {
 
-		
 		$("#btn_query").click(function() {
 			var opt = {
-					query : {
-						name : $("#txt_search_name").val()
-					}
+				query : {
+					name : $("#txt_search_name").val()
 				}
+			}
 			$("#tb_users").bootstrapTable('refresh', opt);
+		});
+
+		$("#btn_edit").click(function() {
+			editInfo("update");
+		});
+		$("#btn_add").click(function() {
+			editInfo("add");
+		});
+
+		$("#btn_delete").click(function() {
+			var rows = $('#tb_users').bootstrapTable('getAllSelections');
+			if (rows.length == 0) {
+				alert("请选择一行");
+				return;
+			}
+
+			var selectedRow = rows[0];
+			var r = confirm("删除ID为" + selectedRow.id + "的记录");
+			if (r == true) {
+				//document.write("You pressed OK!")
+			} else {
+				//document.write("You pressed Cancel!")
+			}
+
 		});
 	};
 
 	return oInit;
 };
+
