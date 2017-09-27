@@ -69,7 +69,7 @@ var TableInit = function() {
 			cardView : false, // 是否显示详细视图
 			detailView : false, // 是否显示父子表
 			showExport : true,
-			
+			//列参数
 			columns : [ {
 				checkbox : true
 				
@@ -97,7 +97,16 @@ var TableInit = function() {
 			      return "<a onclick=editInfo('update')>编辑</a>";
 			   }
 		    }
-			]
+			],
+			
+			//事件demo
+			onAll: function (name, args) {
+//				console.log("方法名称:"+name );
+//				console.log(args);
+		    },
+		    onClickRow:function(row, $element){
+		    	alert("行ID:"+row.id);
+		    }
 		});
 	};
 
@@ -120,6 +129,7 @@ var ButtonInit = function() {
 
 	oInit.Init = function() {
 
+		//查询参数
 		$("#btn_query").click(function() {
 			var opt = {
 				query : {
@@ -145,13 +155,22 @@ var ButtonInit = function() {
 
 			var selectedRow = rows[0];
 			var r = confirm("删除ID为" + selectedRow.id + "的记录");
-			if (r == true) {
-				//document.write("You pressed OK!")
-			} else {
-				//document.write("You pressed Cancel!")
-			}
-
+			
 		});
+		
+		$("#btn_all_options").click(function() {
+			 alert(JSON.stringify($('#tb_users').bootstrapTable('getOptions')));
+		});
+		
+		$("#btn_append").click(function() {
+			 var data=
+					 [{"id":100,"name":"name_append1",age:100}];
+			 
+			 $('#tb_users').bootstrapTable('prepend',data);
+			 
+			 $('#tb_users').bootstrapTable('remove',{field: 'id', values: [2,3]});
+		});
+
 	};
 
 	return oInit;
