@@ -79,7 +79,15 @@ var TableInit = function() {
 				radio:false
 			}, {
 				field : 'name',
-				title : '姓名'
+				title : '姓名',
+				editable: {  
+                    type: 'text',  
+                    validate: function (value) {  
+                        if ($.trim(value) == '') {  
+                            return '不能为空!';  
+                        }  
+                    }  
+                }  
 			}, {
 				field : 'age',
 				title : '年龄',
@@ -108,7 +116,17 @@ var TableInit = function() {
 		    	alert("行ID:"+row.id);
 		    }
 		});
+		
+
+		$("#tb_users").find("td").each(function () {
+			  
+			　　$(this).editable();
+			   console.log();
+			});
+			　　
 	};
+	
+	
 
 	// 得到查询的参数
 	oTableInit.queryParams = function(params) {
@@ -171,6 +189,7 @@ var ButtonInit = function() {
 			 $('#tb_users').bootstrapTable('remove',{field: 'id', values: [2,3]});
 		});
 
+		 
 	};
 
 	return oInit;
