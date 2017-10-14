@@ -66,12 +66,7 @@
         onCellHtmlData: null,
         onMsoNumberFormat: null, // Excel 2000 html format only. See readme.md for more information about msonumberformat
         outputMode: 'file',  // 'file', 'string', 'base64' or 'window' (experimental)
-        pdfmake: {enabled: false,                               // true: use pdfmake instead of jspdf and jspdf-autotable (experimental)
-                  docDefinition: {pageOrientation: 'portrait',  // 'portrait' or 'landscape'
-                                  defaultStyle: {font: 'Roboto' // default is 'Roboto', for arabic font set this option to 'Mirza' and include mirza_fonts.js
-                                                }
-                                 },
-                  fonts: {}
+        pdfmake: {enabled: true
                  },
         tbodySelector: 'tr',
         tfootSelector: 'tr', // set empty ('') to prevent export of tfoot rows
@@ -859,26 +854,59 @@
 
           CollectPdfmakeData ($rows, 'th,td', $hrows.length + $rows.length);
 
-          var docDefinition = { content: [ {
-                                  table: {
-                                    headerRows: $hrows.length,
-                                    widths: widths,
-                                    body: body
-                                  }
-                               }]};
-
-          $.extend(true, docDefinition, defaults.pdfmake.docDefinition);
-
-          pdfMake.fonts = {
-            Roboto: {
-              normal: 'Roboto-Regular.ttf',
-              bold: 'Roboto-Medium.ttf',
-              italics: 'Roboto-Italic.ttf',
-              bolditalics: 'Roboto-MediumItalic.ttf'
-            }
-          };
-
-          $.extend(true, pdfMake.fonts, defaults.pdfmake.fonts);
+			pdfMake.fonts = {
+                Roboto: {
+                    normal: 'Roboto-Regular.ttf',
+                    bold: 'Roboto-Medium.ttf',
+                    italics: 'Roboto-Italic.ttf',
+                    bolditalics: 'Roboto-Italic.ttf'
+                },
+                微软雅黑: {
+                    normal: 'msyh.ttf',
+                    bold: 'msyhbd.ttf',
+                    italics: 'msyh.ttf',
+                    bolditalics: 'msyhbd.ttf'
+                }
+            };
+            
+            $.extend(true, pdfMake.fonts, defaults.pdfmake.fonts);
+            var docDefinition = {
+                pageOrientation: 'landscape',
+                content: [
+                    {
+                        table: {
+                            headerRows: $hrows.length,
+                            widths: widths,
+                            body: body
+                        }
+                    }
+                ],
+                defaultStyle: {
+                    font: '微软雅黑'
+                }
+            };
+            $.extend(true, docDefinition, defaults.pdfmake.docDefinition);
+//        var docDefinition = { content: [ {
+//                                table: {
+//                                  headerRows: $hrows.length,
+//                                  widths: widths,
+//                                  body: body
+//                                }
+//                             }]};
+//
+//        $.extend(true, docDefinition, defaults.pdfmake.docDefinition);
+//
+//        pdfMake.fonts = {
+//          Roboto: {
+//            normal: 'Roboto-Regular.ttf',
+//            bold: 'Roboto-Medium.ttf',
+//            italics: 'Roboto-Italic.ttf',
+//            bolditalics: 'Roboto-MediumItalic.ttf'
+//          }
+//        };
+//			$.extend(true, pdfMake.fonts, defaults.pdfmake.fonts);
+            
+          
 
           pdfMake.createPdf(docDefinition).getBuffer(function (buffer) {
 
@@ -1285,16 +1313,11 @@
       function isColumnIgnored(rowLength, colIndex) {
         var result = false;
         if (defaults.ignoreColumn.length > 0) {
-          if (typeof defaults.ignoreColumn[0] == 'string') {
-            if (colNames.length > colIndex && typeof colNames[colIndex] != 'undefined')
-              if ($.inArray(colNames[colIndex], defaults.ignoreColumn) != -1)
-                result = true;
-          }
-          else if (typeof defaults.ignoreColumn[0] == 'number') {
-            if ($.inArray(colIndex, defaults.ignoreColumn) != -1 ||
-                $.inArray(colIndex-rowLength, defaults.ignoreColumn) != -1)
-              result = true;
-          }
+          if ($.inArray(colIndex, defaults.ignoreColumn) != -1 ||
+              $.inArray(colIndex-rowLength, defaults.ignoreColumn) != -1 ||
+              (colNames.length > colIndex && typeof colNames[colIndex] != 'undefined' &&
+               $.inArray(colNames[colIndex], defaults.ignoreColumn) != -1))
+            result = true;
         }
         return result;
       }
@@ -1698,8 +1721,10 @@
           var $cell = $(cell);
           var htmlData;
 
-          if ($cell[0].hasAttribute("data-tableexport-value"))
+          if ($cell[0].hasAttribute("data-tableexport-value")) {
             htmlData = $cell.data("tableexport-value");
+            htmlData = htmlData ? htmlData+'' : ''
+          }
           else {
             htmlData = $cell.html();
 
@@ -1729,7 +1754,7 @@
           if (defaults.htmlContent === true) {
             result = $.trim(htmlData);
           }
-          else if (htmlData != '') {
+          else if (htmlData && htmlData != '') {
             var text = htmlData.replace(/\n/g,'\u2028').replace(/<br\s*[\/]?>/gi, '\u2060');
             var obj = $('<div/>').html(text).contents();
             text = '';
@@ -1973,7 +1998,10 @@
               DownloadLink.target = '_blank';
 
             if ( typeof data == 'object' ) {
-              blobUrl = window.URL.createObjectURL(data);
+            	var binaryData = [];
+            	binaryData.push(data);
+            	blobUrl=window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
+              //blobUrl = window.URL.createObjectURL(data);
               DownloadLink.href = blobUrl;
             }
             else if (header.toLowerCase().indexOf("base64,") >= 0)

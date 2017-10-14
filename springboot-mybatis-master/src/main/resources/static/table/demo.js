@@ -10,33 +10,6 @@ $(function() {
 
 });
 
-//触发模态框的同时调用此方法
-function editInfo(method) {
-	// 新增
-	if (method == "add") {
-		$('#update').modal('show');
-	} else if (method == "update") {
-		// 更新
-		var rows = $('#tb_users').bootstrapTable('getAllSelections');
-		if (rows.length == 0) {
-			alert("请选择一行");
-			return;
-		}
-		var selectedRow = rows[0];
-
-		// 获取表格中的一行数据
-		var id = selectedRow.id
-		var name = selectedRow.name
-		var age = selectedRow.age
-
-		// 向模态框中传值
-		$('#id').val(id);
-		$('#name').val(name);
-		$('#age').val(age);
-
-		$('#update').modal('show');
-	}
-}
 
 var TableInit = function() {
 	var oTableInit = new Object();
@@ -64,7 +37,6 @@ var TableInit = function() {
 			minimumCountColumns : 2, // 最少允许的列数
 			clickToSelect : true, // 是否启用点击选中行
 			height : 500, // 行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-			// uniqueId: "ID", //每一行的唯一标识，一般为主键列
 			showToggle : true, // 是否显示详细视图和列表视图的切换按钮
 			cardView : false, // 是否显示详细视图
 			detailView : false, // 是否显示父子表
@@ -102,7 +74,7 @@ var TableInit = function() {
 				valign:"middle",
 				formatter:function(value,row,index){
 				  //alert(value);
-			      return "<a onclick=editInfo('update')>编辑</a>";
+			      return "<a onclick=editInfo('update')>详细</a>";
 			   }
 		    }
 			],
@@ -113,7 +85,7 @@ var TableInit = function() {
 //				console.log(args);
 		    },
 		    onClickRow:function(row, $element){
-		    	alert("行ID:"+row.id);
+		    	//alert("行ID:"+row.id);
 		    }
 		});
 		
@@ -142,6 +114,41 @@ var TableInit = function() {
 	return oTableInit;
 };
 
+
+//触发模态框的同时调用此方法
+function editInfo(method) {
+	// 新增
+	if (method == "add") {
+		$('#update').modal('show');
+		
+	 
+	 $('#tb_users').bootstrapTable('prepend',data);
+	} else if (method == "update") {
+		// 更新
+		var rows = $('#tb_users').bootstrapTable('getAllSelections');
+		var selectedRow = rows[0];
+		// 获取表格中的一行数据
+		var id = selectedRow.id
+		var name = selectedRow.name
+		var age = selectedRow.age
+
+		// 向模态框中传值
+		$('#id').val(id);
+		$('#name').val(name);
+		$('#age').val(age);
+		$('#update').modal('show');
+	}
+}
+
+function add(){
+	var name=$("#name").val();
+	var age=$("#age").val();
+	 var data=
+		 [{"id":100,name:name,age:age}];
+	 $('#tb_users').bootstrapTable('prepend',data);
+}
+
+
 var ButtonInit = function() {
 	var oInit = new Object();
 
@@ -166,10 +173,6 @@ var ButtonInit = function() {
 
 		$("#btn_delete").click(function() {
 			var rows = $('#tb_users').bootstrapTable('getAllSelections');
-			if (rows.length == 0) {
-				alert("请选择一行");
-				return;
-			}
 
 			var selectedRow = rows[0];
 			var r = confirm("删除ID为" + selectedRow.id + "的记录");
