@@ -34,13 +34,15 @@ var TableInit = function() {
 			strictSearch : true,
 			showColumns : true, // 是否显示所有的列
 			showRefresh : true, // 是否显示刷新按钮
-			minimumCountColumns : 2, // 最少允许的列数
+			minimumCountColumns : 1, // 最少允许的列数
 			clickToSelect : true, // 是否启用点击选中行
 			height : 500, // 行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 			showToggle : true, // 是否显示详细视图和列表视图的切换按钮
 			cardView : false, // 是否显示详细视图
 			detailView : false, // 是否显示父子表
-			showExport : true,
+			showExport : true, //是否显示导出按钮
+			
+			
 			//列参数
 			columns : [ {
 				checkbox : true
@@ -49,6 +51,7 @@ var TableInit = function() {
 				field : 'id',
 				title : 'ID',
 				radio:false
+				
 			}, {
 				field : 'name',
 				title : '姓名',
@@ -68,12 +71,12 @@ var TableInit = function() {
 				
 
 			} ,
-			{   field:"name",
+			{   field:"operation",
 				title:"操作",
 				align:"center",
 				valign:"middle",
 				formatter:function(value,row,index){
-				  //alert(value);
+				 // alert(value);
 			      return "<a onclick=editInfo('update')>详细</a>";
 			   }
 		    }
@@ -85,8 +88,34 @@ var TableInit = function() {
 //				console.log(args);
 		    },
 		    onClickRow:function(row, $element){
-		    	//alert("行ID:"+row.id);
-		    }
+		    	alert("行ID:"+row.id);
+		    },
+		    
+		    //---------------插件扩展-----------------
+			//cookie参数
+			cookie:true,//是否存cookie
+			cookieIdTable:"tb_users",
+			
+			//菜单参数
+			contextMenuTrigger:'right',
+			contextMenu: '#context-menu',
+			onContextMenuItem: function(row, $el){
+			        if($el.data("item") == "edit"){
+			            alert("Edit: " + row.id + ' ' + row.name );
+			        } else if($el.data("item") == "delete"){
+			            alert("Delete: " + row.id + ' ' + row.name);
+			        } else if($el.data("item") == "action1"){
+			            alert("Action1: " + row.id + ' ' + row.name);
+			        } else if($el.data("item") == "action2"){
+			            alert("Action2: " + + row.id + ' ' + row.name);
+			        }
+			   },
+			   
+			   filter:true,
+			
+			
+			
+			
 		});
 		
 
@@ -97,6 +126,7 @@ var TableInit = function() {
 			});
 			　　
 	};
+	//$('#tb_users').bootstrapTable("setFilterData", "name", ["item 1", "item 2", "item 3"]);
 	
 	
 
@@ -105,9 +135,9 @@ var TableInit = function() {
 		var temp = { // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
 			limit : params.limit, // 页面大小
 			offset : params.offset, // 页码
-			name : $("#txt_search_name").val(),
 			sortName : this.sortName,
-			sortOrder : this.sortOrder
+			sortOrder : this.sortOrder,
+			name : $("#txt_search_name").val()
 		};
 		return temp;
 	};

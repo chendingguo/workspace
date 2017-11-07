@@ -66,7 +66,7 @@
         onCellHtmlData: null,
         onMsoNumberFormat: null, // Excel 2000 html format only. See readme.md for more information about msonumberformat
         outputMode: 'file',  // 'file', 'string', 'base64' or 'window' (experimental)
-        pdfmake: {enabled: true
+        pdfmake: {enabled: false
                  },
         tbodySelector: 'tr',
         tfootSelector: 'tr', // set empty ('') to prevent export of tfoot rows

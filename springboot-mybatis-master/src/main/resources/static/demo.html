@@ -6,20 +6,34 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/bootstrap-table/css/bootstrap-table.css">
     <link rel="stylesheet" href="assets/bootstrap-table/css/bootstrap-editable.css">
-    <link rel="stylesheet" href="assets/examples.css">
+   
     <script src="assets/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/bootstrap-table/js/bootstrap-table.js"></script>
     
+    
+    <!-- 导出表格 -->
     <script src="assets/jquery-plugin/pdfmake/pdfmake.min.js"></script>
     <script src="assets/jquery-plugin/pdfmake/vfs_fonts.js"></script>
     <script src="assets/jquery-plugin/jsPDF/jspdf.min.js"></script>
     <script src="assets/jquery-plugin/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
     <script src="assets/jquery-plugin/tableExport.js"></script>
     
-    <script src="assets/bootstrap-table/js/bootstrap-table.js"></script>
+   
     <script src="assets/bootstrap-table/js/bootstrap-editable.js"></script>
     <script src="assets/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+   
+    <!-- editable plugin -->
     <script src="assets/bootstrap-table/extensions/editable/bootstrap-table-editable.js"></script>
+    
+    <!-- cookie plugin -->
+    <script src="assets/bootstrap-table/extensions/cookie/bootstrap-table-cookie.js"></script>
+    
+     <!-- context menu plugin -->
+    <script src="assets/bootstrap-table/extensions/contextmenu/bootstrap-table-contextmenu.js"></script>
+    
+    
+    
     <script src="assets/bootstrap-table/js/bootstrap-table-zh-CN.js"></script>
     <script src="demo.js"></script>
 
@@ -44,6 +58,7 @@
                 </form>
             </div>
         </div>
+        
         <div id="toolbar" class="btn-group">
             <button id="btn_add" type="button" class="btn btn-default">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
@@ -68,7 +83,7 @@
 
     </div>
 
-
+  <!-- 模态框（Modal）start -->
     <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -79,7 +94,7 @@
                 <div class="modal-body">
 
                     <input type="hidden" name="id" id="id" /> 姓名：
-                    <input type="text" name="name" id="name" /> 　年龄：
+                    <input type="text" name="name" id="name" /> 年龄：
                     <input type="text" name="age" id="age" />
 
                 </div>
@@ -90,9 +105,19 @@
             </div>
             <!-- /.modal-content -->
         </div>
-        <!-- /.modal -->
+       
     </div>
     <!-- 模态框（Modal）end -->
+    
+    
+    <!-- 菜单内容  start-->
+   <ul id="context-menu" class="dropdown-menu">
+        <li data-item="edit"><a>Edit</a></li>
+        <li data-item="delete"><a>Delete</a></li>
+        <li data-item="action1"><a>Action Here</a></li>
+        <li data-item="action2"><a>And Action Here</a></li>
+    </ul>  
+     <!-- 菜单内容  end-->
 </body>
 
 </html>
