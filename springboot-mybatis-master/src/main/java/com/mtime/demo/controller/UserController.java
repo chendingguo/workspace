@@ -1,13 +1,12 @@
 package com.mtime.demo.controller;
 
+import com.mtime.demo.service.FaceCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mtime.demo.model.User;
-import com.mtime.demo.service.UserService;
 
 
 @Controller
@@ -16,16 +15,31 @@ public class UserController {
     private Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
-    private UserService userService;
+    private FaceCheckService faceCheckService;
 
-    @RequestMapping("/getUserInfo")
+
+    @RequestMapping("/uploadImg")
     @ResponseBody
-    public User getUserInfo() {
-        User user = userService.getUserInfo();
-        if(user!=null){
-            System.out.println("user.getName():"+user.getName());
-            logger.info("user.getAge():"+user.getAge());
-        }
-        return user;
+    public String uploadImg(
+            @RequestParam(value = "imgData", required = false, defaultValue = "") String imgData) {
+
+
+        faceCheckService.generateImage(imgData.substring(22));
+
+        return "";
     }
+
+
+
+
+//    @RequestMapping("/getUserInfo")
+//    @ResponseBody
+//    public User getUserInfo() {
+//        User user = userService.getUserInfo();
+//        if(user!=null){
+//            System.out.println("user.getName():"+user.getName());
+//            logger.info("user.getAge():"+user.getAge());
+//        }
+//        return user;
+//    }
 }
