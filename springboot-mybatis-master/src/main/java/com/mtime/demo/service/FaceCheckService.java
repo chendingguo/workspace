@@ -26,6 +26,7 @@ public class FaceCheckService {
     @Value("${image.path}")
     private String imagePath;
 
+
     public AipFace getAipFaceClient() {
 
 
@@ -42,6 +43,7 @@ public class FaceCheckService {
     }
 
     public JSONObject matchFace() {
+
         AipFace client = getAipFaceClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("ext_fields", "qualities");
@@ -59,7 +61,35 @@ public class FaceCheckService {
         return res;
     }
 
+    public JSONObject addUser(String userName, String image) {
+        // 传入可选参数调用接口
+        AipFace client = getAipFaceClient();
+        HashMap<String, String> options = new HashMap<>();
+        options.put("action_type", "replace");
 
+        String uid = userName;
+        String userInfo = userName;
+        String groupId = "group1";
+
+        JSONObject res = client.addUser(uid, userInfo, groupId, image, options);
+        System.out.println(res.toString(2));
+        HashMap<String, String> options1 = new HashMap<String, String>();
+        options1.put("start", "0");
+        options1.put("end", "50");
+
+
+
+        // 组内用户列表查询
+        JSONObject ress = client.getGroupUsers(groupId, options);
+
+
+        System.out.println(ress.toString(2));
+
+
+
+        return res;
+
+    }
 
 
     /**
@@ -69,9 +99,9 @@ public class FaceCheckService {
      * @Author:
      * @CreateTime:
      */
-    public  boolean generateImage(String imgStr) {
-        if (imgStr == null) return false;
-        String photoPath=imagePath+System.currentTimeMillis()+".jpg";
+    public String generateImage(String imgStr) {
+        if (imgStr == null) return "";
+        String photoPath = imagePath + System.currentTimeMillis() + ".jpg";
         BASE64Decoder decoder = new BASE64Decoder();
         try {
 // 解密
@@ -86,9 +116,9 @@ public class FaceCheckService {
             out.write(b);
             out.flush();
             out.close();
-            return true;
+            return photoPath;
         } catch (Exception e) {
-            return false;
+            return "";
         }
     }
 

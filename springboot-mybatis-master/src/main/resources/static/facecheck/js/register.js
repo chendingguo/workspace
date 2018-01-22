@@ -89,19 +89,21 @@ register.fn = {
         // document.write(dataURL.toString());
 
         $.ajax({
-            url: '/uploadImg',
+            url: '/register',
             type: 'POST', //GET
             async: true,    //或false,是否异步
             data: {
-                imgData: dataURL
+                imgData: dataURL,
+                userName:$("#user-name").val()
             },
             timeout: 5000,    //超时时间
             dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
             beforeSend: function (xhr) {
-                console.log(xhr)
-                console.log('发送前')
+                // console.log(xhr)
+                // console.log('发送前')
             },
             success: function (data, textStatus, jqXHR) {
+                console.log("[RESULT]")
                 console.log(data)
                 console.log(textStatus)
                 console.log(jqXHR)
@@ -112,7 +114,7 @@ register.fn = {
                 console.log(textStatus)
             },
             complete: function () {
-                console.log('结束')
+                //console.log('结束')
             }
         });
     }
