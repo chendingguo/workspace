@@ -58,7 +58,7 @@ public class FaceCheckService {
         HashMap<String, String> options = new HashMap<>();
         options.put("action_type", "replace");
         int idx = image.lastIndexOf("/");
-        String uid = image.substring(idx + 1, image.length());
+        String uid = image.substring(idx + 1, image.length()).replace(".jpg","");
         String userInfo = userName;
         String groupId = "group1";
 
@@ -93,7 +93,8 @@ public class FaceCheckService {
             String info=obj.getString("user_info");
             ui.setId(userId);
             ui.setName(info);
-            ui.setImage("images\\160050.66479081_280X138X4.jpg");
+            String images="images\\"+userId+".jpg";
+            ui.setImage(images);
             uiList.add(ui);
 
         }
