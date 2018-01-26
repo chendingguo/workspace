@@ -1,7 +1,14 @@
 package com.mtime.demo.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.alibaba.fastjson.JSON;
 import com.baidu.aip.face.AipFace;
+import com.mtime.demo.model.ResultDataModel;
+import com.mtime.demo.model.UserInfo;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
@@ -10,41 +17,25 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Service
 public class FaceCheckService {
-    @Value("${baidu.app.id}")
-    private String APP_ID;
-
-    @Value("${baidu.api.key}")
-    private String API_KEY;
-
-    @Value("${baidu.secret.key}")
-    private String SECRET_KEY;
+    @Autowired
+    ClientManager clientManager;
 
     @Value("${image.path}")
     private String imagePath;
 
 
-    public AipFace getAipFaceClient() {
 
 
-        AipFace client = new AipFace(APP_ID, API_KEY, SECRET_KEY);
 
-        // 可选：设置网络连接参数
-        client.setConnectionTimeoutInMillis(2000);
-        client.setSocketTimeoutInMillis(60000);
-
-        // 可选：设置代理服务器地址, http和socket二选一，或者均不设置
-        //client.setHttpProxy("proxy_host", proxy_port);  // 设置http代理
-        // client.setSocketProxy("proxy_host", proxy_port);  // 设置socket代理
-        return client;
-    }
 
     public JSONObject matchFace() {
+        AipFace client=clientManager.getAipFaceClient( );
 
-        AipFace client = getAipFaceClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("ext_fields", "qualities");
         options.put("image_liveness", ",faceliveness");
@@ -56,39 +47,72 @@ public class FaceCheckService {
         ArrayList<String> images = new ArrayList<String>();
         images.add(path1);
         images.add(path2);
-        JSONObject res = client.match(images, options);
+        JSONObject res =client.match(images, options);
         System.out.println(res.toString(2));
         return res;
     }
 
     public JSONObject addUser(String userName, String image) {
         // 传入可选参数调用接口
-        AipFace client = getAipFaceClient();
+        AipFace client=clientManager.getAipFaceClient( );
         HashMap<String, String> options = new HashMap<>();
         options.put("action_type", "replace");
-
-        String uid = userName;
+        int idx = image.lastIndexOf("/");
+        String uid = image.substring(idx + 1, image.length());
         String userInfo = userName;
         String groupId = "group1";
 
-        JSONObject res = client.addUser(uid, userInfo, groupId, image, options);
+        JSONObject res =client.addUser(uid, userInfo, groupId, image, options);
         System.out.println(res.toString(2));
-        HashMap<String, String> options1 = new HashMap<String, String>();
-        options1.put("start", "0");
-        options1.put("end", "50");
 
-
-
-        // 组内用户列表查询
-        JSONObject ress = client.getGroupUsers(groupId, options);
-
-
-        System.out.println(ress.toString(2));
 
 
 
         return res;
 
+    }
+
+    public ResultDataModel<UserInfo> getUsers(UserInfo userInfo){
+        AipFace client=clientManager.getAipFaceClient( );
+        ResultDataModel resultDataModel=new ResultDataModel();
+
+        String groupId = "group1";
+        HashMap<String, String> options= new HashMap<String, String>();
+        options.put("start", "0");
+        options.put("end", "50");
+        // 组内用户列表查询
+        JSONObject res =client.getGroupUsers(groupId, options);
+
+        long total= res.getLong("result_num");
+        List<UserInfo> uiList=new ArrayList<>();
+        JSONArray array=res.getJSONArray("result");
+        for(int i=0;i<array.length();i++){
+            UserInfo ui=new UserInfo();
+            JSONObject obj=array.getJSONObject(i);
+            String userId=obj.getString("uid");
+            String info=obj.getString("user_info");
+            ui.setId(userId);
+            ui.setName(info);
+            ui.setImage("images\\160050.66479081_280X138X4.jpg");
+            uiList.add(ui);
+
+        }
+        resultDataModel.setRows(uiList);
+        resultDataModel.setTotal(total);
+        System.out.println(res.toString(2));
+
+        return  resultDataModel;
+    }
+
+    public String deleteUser(String userId){
+        AipFace client=clientManager.getAipFaceClient( );
+        // 传入可选参数调用接口
+        HashMap<String, String> options = new HashMap<>();
+        options.put("group_id", "group1");
+
+        // 人脸删除
+        JSONObject res =client.deleteUser(userId, options);
+        return res.toString(2);
     }
 
 

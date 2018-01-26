@@ -1,5 +1,8 @@
 package com.mtime.demo.controller;
 
+import com.mtime.demo.model.ResultDataModel;
+import com.mtime.demo.model.User;
+import com.mtime.demo.model.UserInfo;
 import com.mtime.demo.service.FaceCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ public class UserController {
 
     /**
      * user regitser
+     *
      * @param imgData
      * @return
      */
@@ -39,13 +43,39 @@ public class UserController {
     @ResponseBody
     public String register(@RequestParam(value = "imgData", required = false, defaultValue = "") String imgData,
                            @RequestParam(value = "userName", required = false, defaultValue = "") String userName) {
-        String image=faceCheckService.generateImage(imgData.substring(22));
-        if(!StringUtils.isEmpty(image)){
-            return faceCheckService.addUser(userName,image).toString();
+        String image = faceCheckService.generateImage(imgData.substring(22));
+        if (!StringUtils.isEmpty(image)) {
+            return faceCheckService.addUser(userName, image).toString();
 
-        }else{
-             return "failed";
+        } else {
+            return "failed";
         }
+
+    }
+
+    @RequestMapping("/getUsers")
+    @ResponseBody
+    public ResultDataModel<User> getUsers(
+            @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") int offset
+    ) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setLimit(limit);
+        userInfo.setOffset(offset);
+
+        ResultDataModel resultDataModel = faceCheckService.getUsers(userInfo);
+        return resultDataModel;
+
+    }
+
+    @RequestMapping("/deleteUser")
+    @ResponseBody
+    public String deleteUser(
+            @RequestParam(value = "userId", required = false, defaultValue = "") String userId
+    ) {
+
+        String result = faceCheckService.deleteUser(userId);
+        return result;
 
     }
 
