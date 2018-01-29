@@ -107,6 +107,7 @@ register.fn = {
                 console.log(data)
                 console.log(textStatus)
                 console.log(jqXHR)
+                alert(JSON.stringify(data));
             },
             error: function (xhr, textStatus) {
                 console.log('错误')

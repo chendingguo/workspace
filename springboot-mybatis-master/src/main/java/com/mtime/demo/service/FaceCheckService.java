@@ -1,13 +1,10 @@
 package com.mtime.demo.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.alibaba.fastjson.JSON;
 import com.baidu.aip.face.AipFace;
 import com.mtime.demo.model.ResultDataModel;
 import com.mtime.demo.model.UserInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -93,7 +90,7 @@ public class FaceCheckService {
             String info=obj.getString("user_info");
             ui.setId(userId);
             ui.setName(info);
-            String images="images\\"+userId+".jpg";
+            String images="/images/"+userId+".jpg";
             ui.setImage(images);
             uiList.add(ui);
 
