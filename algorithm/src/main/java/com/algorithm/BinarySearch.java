@@ -47,15 +47,15 @@ public class BinarySearch {
 	 * @param hi
 	 * @return
 	 */
-	public static int sort(int[] array, int a, int lo, int hi) {
+	public static int search(int[] array, int a, int lo, int hi) {
 		if (lo <= hi) {
 			int mid = (lo + hi) / 2;
 			if (a == array[mid]) {
 				return mid + 1;
 			} else if (a > array[mid]) {
-				return sort(array, a, mid + 1, hi);
+				return search(array, a, mid + 1, hi);
 			} else {
-				return sort(array, a, lo, mid - 1);
+				return search(array, a, lo, mid - 1);
 			}
 		}
 		return -1;
