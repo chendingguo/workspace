@@ -1,7 +1,5 @@
 package com.algorithm;
 
-import org.junit.Test;
-
 public class InfixToSuffix {
     private MyCharStack s1;//定义运算符栈
     private MyCharStack s2;//定义存储结果栈

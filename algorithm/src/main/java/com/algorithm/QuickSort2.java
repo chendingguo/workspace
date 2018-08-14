@@ -47,7 +47,6 @@ public class QuickSort2 {
 				j--;
 			}
 		}
-		;
 
 		return i;
 	}
