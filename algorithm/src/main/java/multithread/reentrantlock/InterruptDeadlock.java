@@ -47,7 +47,7 @@ public class InterruptDeadlock implements Runnable{
         Thread t1 = new Thread(deadLock1);
         Thread t2 = new Thread(deadLock2);
         t1.start();t2.start();
-        Thread.sleep(20000);
+        Thread.sleep(2000);
         t2.interrupt(); // ③
     }
 }
