@@ -1,5 +1,10 @@
 package com.algorithm;
 
+import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * 二分法的基本思想如下：
  * 假设数据是按升序排序的,对于给定值x,从序列的中间位置开始比较,如果当前位置值等于x,则查找成功；若x小于当前位置值,则在数列的前半段中查找；
@@ -60,5 +65,29 @@ public class BinarySearch {
 		}
 		return -1;
 	}
+
+
+//	public List<List<Integer>> levelOrder(TreeNode root) {
+//		Queue<TreeNode> queue=new LinkedList<TreeNode>();
+//		List<List<Integer>> wrapList=new LinkedList<>();
+//		if(root==null) return wrapList;
+//		//1.先将树的根结点放入到队列中
+//		queue.offer(root);
+//		while(!queue.isEmpty()){
+//			//2.计算每层的结点数目，也就是队列中的元素
+//			int levelnums=queue.size();
+//			List<Integer> subList=new LinkedList<>(); //存储每一层的结点的值val
+//			//3.遍历一层的所有结点，把此层的结点的值保存下来(这时也会把遍历的结点踢出去)，同时把下一层的结点放入队列
+//			for(int i=0;i<levelnums;i++){
+//				if(queue.peek().left!=null) queue.offer(queue.peek().left);  //peek返回队列的头元素，但不删除
+//				if(queue.peek().right!=null) queue.offer(queue.peek().right);
+//				subList.add(queue.poll().val);                          //poll()返回队列的头元素，并且删除该元素
+//			}
+//			//4.将每一层的结点的值加入到集合中
+//			wrapList.add(subList);
+//		}
+//		return wrapList;
+//
+//	}
 
 }
