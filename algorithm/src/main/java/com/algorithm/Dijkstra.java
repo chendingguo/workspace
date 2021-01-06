@@ -5,10 +5,9 @@ import com.google.common.graph.ElementOrder;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
 
 
 public class Dijkstra {
@@ -31,19 +30,22 @@ public class Dijkstra {
     public static void main(String[] args) {
         MutableValueGraph<String, Integer> graph = buildGraph1();
         System.out.println(TAG + "graph: " + graph);
+        for(String node:graph.nodes()){
+            System.out.println(node+" "+graph.successors(node));
+        }
 
         testDijkstra(graph, V0);
 
 
-        MutableValueGraph<String, Integer> graph2 = buildGraph2();
-        System.out.println(TAG + "graph: " + graph2);
-
-        testDijkstra(graph2, A);
+//        MutableValueGraph<String, Integer> graph2 = buildGraph2();
+//        System.out.println(TAG + "graph: " + graph2);
+//
+//        testDijkstra(graph2, A);
     }
 
     private static void testDijkstra(MutableValueGraph<String, Integer> graph, String startNode) {
         Set<String> nodes = graph.nodes();
-        Map<String, NodeExtra> nodeExtras = new HashMap<>(nodes.size());
+        Map<String, NodeExtra> nodeExtras = new LinkedHashMap<>(nodes.size());
         /**
          * 初始化extra
          */
@@ -167,32 +169,5 @@ public class Dijkstra {
         return graph;
     }
 
-    private static <K, V> String format(Map<K, V> values) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{");
-        Set<K> keys = values.keySet();
-        for (K key : keys) {
-            builder.append(key).append(":")
-                    .append(values.get(key)).append(",");
-        }
-        if (builder.length() > 1) {
-            builder.deleteCharAt(builder.length() - 1);
-        }
-        builder.append("}");
-        return builder.toString();
-    }
 
-
-    private static <T> String format(Iterable<T> iterable) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{");
-        for (T obj : iterable) {
-            builder.append(obj).append(",");
-        }
-        if (builder.length() > 1) {
-            builder.deleteCharAt(builder.length() - 1);
-        }
-        builder.append("}");
-        return builder.toString();
-    }
 }
