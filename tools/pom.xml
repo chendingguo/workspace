@@ -5,7 +5,7 @@
 	<artifactId>tools</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<httpclient.version>4.5</httpclient.version>
+		<httpclient.version>4.5.13</httpclient.version>
 	</properties>
 	<dependencies>
 		<dependency>
